@@ -1,10 +1,10 @@
-# Edge IP Allowlist Example
+# Edge IP Restriction Example
 
-A Next.js application demonstrating IP-based access control using Contentstack Edge Functions. This project shows how to implement IP allowlisting to restrict access to your application based on client IP addresses.
+A Next.js application demonstrating IP-based access control using Contentstack Edge Functions. This project shows how to implement IP restriction to block access to your application based on specific client IP addresses.
 
 ## 🚀 Features
 
-- **IP Allowlist Protection**: Restrict access to specific IP addresses only
+- **IP Restriction Protection**: Block access from specific IP addresses
 - **Edge Function Integration**: Uses Contentstack Edge Functions for real-time IP validation
 - **Modern UI**: Beautiful, responsive interface built with Next.js and Tailwind CSS
 - **Real-time Access Control**: IP validation happens at the edge for optimal performance
@@ -20,7 +20,7 @@ A Next.js application demonstrating IP-based access control using Contentstack E
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd Edge-ip-whitelist-example-main
+   cd Edge-ip-blacklist-example-main
    ```
 
 2. **Install dependencies**
@@ -38,32 +38,32 @@ A Next.js application demonstrating IP-based access control using Contentstack E
 
 ## 🔧 Configuration
 
-### IP Whitelist Setup
+### IP Restriction Setup
 
-Edit the `functions/[proxy].edge.js` file to configure your allowed IP addresses:
+Edit the `functions/[proxy].edge.js` file to configure your blocked IP addresses:
 
 ```javascript
-const allowedIPs = [
+const blockedIPs = [
   "127.0.0.1",        // Localhost
   "::1",              // IPv6 localhost
-  "192.168.1.100",    // Your office IP
-  "10.0.0.50",        // VPN IP
-  "172.16.0.10"       // Internal network IP
+  "192.168.1.100",    // Office IP to block
+  "10.0.0.50",        // VPN IP to block
+  "172.16.0.10"       // Internal network IP to block
 ];
 ```
 
-### Adding Your IP Address
+### Adding IP Addresses to Block
 
-To add your current IP address to the whitelist:
+To add IP addresses to the restriction list:
 
-1. Visit [whatismyipaddress.com](https://whatismyipaddress.com/) to find your public IP
-2. Add it to the `allowedIPs` array in `functions/[proxy].edge.js`
+1. Identify the IP addresses you want to block
+2. Add them to the `blockedIPs` array in `functions/[proxy].edge.js`
 3. Deploy the Edge Function
 
 ## 🏗️ Project Structure
 
 ```
-Edge-ip-whitelist-example-main/
+Edge-ip-blacklist-example-main/
 ├── app/                    # Next.js app directory
 │   ├── page.tsx           # Main application page
 │   ├── layout.tsx         # Root layout component
@@ -79,10 +79,10 @@ Edge-ip-whitelist-example-main/
 
 1. **Request Interception**: All requests are intercepted by the Edge Function
 2. **IP Extraction**: The client's IP address is extracted from request headers
-3. **Validation**: The IP is checked against the whitelist
+3. **Validation**: The IP is checked against the blocked IP list
 4. **Access Control**: 
-   - ✅ **Allowed**: Request proceeds to the application
-   - ❌ **Denied**: Returns 403 Forbidden response
+   - ✅ **Allowed**: Request proceeds to the application (IP not in blocked list)
+   - ❌ **Denied**: Returns 403 Forbidden response (IP is in blocked list)
 
 ### IP Detection Logic
 
@@ -120,30 +120,22 @@ npm start
 
 ### Test Different IP Scenarios
 
-1. **Allowed IP**: Should see the success page
-2. **Non-allowed IP**: Should see "Forbidden" message
-3. **Local Development**: Should work with `127.0.0.1`
+1. **Non-blocked IP**: Should see the success page
+2. **Blocked IP**: Should see "Forbidden" message
+3. **Local Development**: May be blocked if `127.0.0.1` is in the blocked list
 
 ### Manual Testing
 
 You can test the IP validation by:
 - Using different network connections
 - Using VPN services
-- Modifying the `allowedIPs` array
+- Modifying the `blockedIPs` array
 
 ## 📚 Learn More
 
 - [Contentstack Edge Functions Documentation](https://www.contentstack.com/docs/developers/launch/edge-functions)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📄 License
 
@@ -155,7 +147,7 @@ If you encounter any issues or have questions:
 
 1. Check the [Contentstack documentation](https://www.contentstack.com/docs/)
 2. Review the Edge Function logs in your Contentstack dashboard
-3. Ensure your IP address is correctly added to the whitelist
+3. Ensure your IP addresses are correctly added to the restriction list
 
 ---
 
